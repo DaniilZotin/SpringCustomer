@@ -4,10 +4,13 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import net.proselyte.customerdemo.dao.CustomerDao;
+import net.proselyte.customerdemo.dao.GroupDao;
 import net.proselyte.customerdemo.dao.OrderDao;
 import net.proselyte.customerdemo.model.Customer;
+import net.proselyte.customerdemo.model.Group;
 import net.proselyte.customerdemo.model.Order;
 import net.proselyte.customerdemo.services.CustomerService;
+import net.proselyte.customerdemo.services.GroupService;
 import net.proselyte.customerdemo.services.OrderService;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +36,10 @@ public class UserController {
     private final OrderService orderService;
 
     private final CustomerDao customerDao;
+
+//    private final GroupDao groupDao;
+
+    private final GroupService groupService;
 
     @GetMapping("/release")
     public String release(){
@@ -129,6 +136,17 @@ public class UserController {
         }
 
         return new ResponseEntity<>(orderService.createOrder(order, customerId),HttpStatus.OK);
+    }
+
+
+    @RequestMapping(value = "allGroups", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<List<Group>> getAllGroup(){
+
+        List<Group> allGroups = new ArrayList<>();
+        allGroups = groupService.getAll();
+
+        return new ResponseEntity<>(allGroups, HttpStatus.OK);
+
     }
 
 
