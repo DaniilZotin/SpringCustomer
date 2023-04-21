@@ -4,14 +4,18 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import net.proselyte.customerdemo.dao.CustomerDao;
+import net.proselyte.customerdemo.dao.DeveloperDao;
 import net.proselyte.customerdemo.dao.GroupDao;
 import net.proselyte.customerdemo.dao.OrderDao;
 import net.proselyte.customerdemo.model.Customer;
+import net.proselyte.customerdemo.model.Developer;
 import net.proselyte.customerdemo.model.Group;
 import net.proselyte.customerdemo.model.Order;
 import net.proselyte.customerdemo.services.CustomerService;
+import net.proselyte.customerdemo.services.DeveloperService;
 import net.proselyte.customerdemo.services.GroupService;
 import net.proselyte.customerdemo.services.OrderService;
+import net.proselyte.customerdemo.services.implementations.DeveloperServiceImpl;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -40,6 +44,8 @@ public class UserController {
     private final GroupDao groupDao;
 
     private final GroupService groupService;
+
+    private final DeveloperService developerService;
 
     @GetMapping("/release")
     public String release(){
@@ -153,6 +159,29 @@ public class UserController {
 
     }
 
+
+    @RequestMapping(value = "createGroup", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<Group> createGroup(@RequestBody @Valid Group group){
+        HttpHeaders httpHeaders = new HttpHeaders();
+
+        if (group == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        groupService.save(group);
+
+        return new ResponseEntity<>(group,HttpStatus.OK);
+    }
+
+
+    @RequestMapping(value = "createDeveloper", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<DeveloperDao> createDeveloper(@RequestBody Developer developer, @RequestParam Long groupId){
+        if(developer == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(developerService.createDeveloper(developer,groupId), HttpStatus.OK);
+    }
 
 
 

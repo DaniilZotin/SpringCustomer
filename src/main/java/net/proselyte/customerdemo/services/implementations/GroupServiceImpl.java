@@ -18,4 +18,11 @@ public class GroupServiceImpl implements GroupService {
     public List<Group> getAll() {
         return groupRepo.findAll();
     }
+
+    @Override
+    public void save(Group group) {
+        groupRepo.save(group);
+    }
+
+
 }

@@ -11,8 +11,8 @@ import lombok.Data;
 @Table(name = "developers")
 public class Developer extends BaseEntity{
 
-    String role;
-    Integer experience;
+    private String role;
+    private Integer experience;
 
     public Developer(){
 
