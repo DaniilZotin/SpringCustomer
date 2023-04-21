@@ -37,7 +37,7 @@ public class UserController {
 
     private final CustomerDao customerDao;
 
-//    private final GroupDao groupDao;
+    private final GroupDao groupDao;
 
     private final GroupService groupService;
 
@@ -140,12 +140,16 @@ public class UserController {
 
 
     @RequestMapping(value = "allGroups", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<List<Group>> getAllGroup(){
+    public ResponseEntity<List<GroupDao>> getAllGroup(){
 
         List<Group> allGroups = new ArrayList<>();
         allGroups = groupService.getAll();
+        List<GroupDao> allGroupsDao = new ArrayList<>();
+        allGroups.forEach(group -> {
+            allGroupsDao.add(GroupDao.toModel(group));
+        });
 
-        return new ResponseEntity<>(allGroups, HttpStatus.OK);
+        return new ResponseEntity<>( allGroupsDao, HttpStatus.OK);
 
     }
 
