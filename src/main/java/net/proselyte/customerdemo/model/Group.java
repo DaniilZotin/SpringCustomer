@@ -1,12 +1,11 @@
 package net.proselyte.customerdemo.model;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 @Entity
@@ -18,6 +17,9 @@ public class Group extends BaseEntity{
 
     @Column(name = "community")
     private BigDecimal community;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "group")
+    List<Developer> developers;
 
     public Group(){
 

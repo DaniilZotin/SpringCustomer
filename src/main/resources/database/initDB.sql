@@ -12,11 +12,18 @@ CREATE TABLE IF NOT EXISTS orders(
     prise decimal not null,
     customer_id bigint references customers(id)
 );
+CREATE TABLE IF NOT EXISTS developers(
+    id BIGINT AUTO_INCREMENT primary key,
+    role varchar(50) not null,
+    experience decimal not null
+);
+
 
 CREATE TABLE IF NOT EXISTS groups_table(
     id BIGINT AUTO_INCREMENT primary key,
     name_group varchar(50) not null,
-    community decimal not null
+    community decimal not null,
+    developer_id bigint references developers(id)
 );
 
 
