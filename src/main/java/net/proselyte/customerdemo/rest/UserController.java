@@ -123,15 +123,16 @@ public class UserController {
     @RequestMapping(value = "customerDao", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<List<CustomerDao>> getCustomerDao(){
         List<Customer> customers = customerService.getAll();
-        List<CustomerDao> customerDaoList = new ArrayList<>();
-        customers.forEach(customer -> {
-            customerDaoList.add(customerDao.customerToCustomerDao(customer));
-
-        });
+        List<CustomerDao> customerDaoList = customers.stream().map(CustomerDao::customerToCustomerDao).collect(Collectors.toList());
+        // Це одне і те саме але різними шляхами, ми перетворили з просто кастомерів на ДАО кастомерів
+//        customers.forEach(customer -> {
+//            customerDaoList.add(customerDao.customerToCustomerDao(customer));
+//
+//        });
 
 
 //        customerDao.setOrders(customer.getOrders().stream().map(OrderDao::toModel).collect(Collectors.toList()));
-        //якось переробити це
+        //Це заготовка я вже замінив
         return new ResponseEntity<>(customerDaoList, HttpStatus.OK);
     }
 
