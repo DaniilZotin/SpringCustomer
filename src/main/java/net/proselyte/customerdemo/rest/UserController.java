@@ -3,14 +3,10 @@ package net.proselyte.customerdemo.rest;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import net.proselyte.customerdemo.dao.CustomerDao;
-import net.proselyte.customerdemo.dao.DeveloperDao;
-import net.proselyte.customerdemo.dao.GroupDao;
-import net.proselyte.customerdemo.dao.OrderDao;
-import net.proselyte.customerdemo.model.Customer;
-import net.proselyte.customerdemo.model.Developer;
-import net.proselyte.customerdemo.model.Group;
-import net.proselyte.customerdemo.model.Order;
+import net.proselyte.customerdemo.dao.*;
+import net.proselyte.customerdemo.model.*;
+import net.proselyte.customerdemo.repo.CourseRepo;
+import net.proselyte.customerdemo.repo.StudentRepo;
 import net.proselyte.customerdemo.services.CustomerService;
 import net.proselyte.customerdemo.services.DeveloperService;
 import net.proselyte.customerdemo.services.GroupService;
@@ -28,6 +24,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static java.util.Arrays.stream;
 
 @RestController
 @RequestMapping("/api/v1/customers/")
@@ -182,6 +180,23 @@ public class UserController {
         }
 
         return new ResponseEntity<>(developerService.createDeveloper(developer,groupId), HttpStatus.OK);
+    }
+
+    private final CourseRepo courseRepo;
+
+    private final StudentRepo studentRepo;
+
+
+    @RequestMapping(value = "getCoursesByStudentId", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<List<CourseDao>> getCourses(@RequestParam Long studentId){
+        List<CourseDao> courses = courseRepo.findCourseByStudentsId(studentId)
+                .stream().map(CourseDao::toModel).collect(Collectors.toList());
+
+//        List<Student> students = studentRepo.findStudentsByCoursesId(1l);
+//        System.out.println(students);
+
+
+        return new ResponseEntity<>(courses, HttpStatus.OK);
     }
 
 

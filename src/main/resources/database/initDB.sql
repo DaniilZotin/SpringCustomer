@@ -27,5 +27,23 @@ CREATE TABLE IF NOT EXISTS developers(
    developer_id bigint references groups_table(id)
 );
 
+CREATE TABLE IF NOT EXISTS students(
+   id BIGINT AUTO_INCREMENT primary key,
+   name_student varchar(50) not null
+);
+
+CREATE TABLE IF NOT EXISTS courses(
+   id BIGINT AUTO_INCREMENT primary key,
+   name_course varchar(50) not null
+);
+
+CREATE TABLE IF NOT EXISTS students_courses (
+   student_id bigint,
+   course_id bigint,
+   PRIMARY KEY (student_id, course_id),
+   FOREIGN KEY (student_id) REFERENCES students(id),
+   FOREIGN KEY (course_id) REFERENCES courses(id)
+);
+
 
 
